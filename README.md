@@ -118,11 +118,6 @@ Create a class `RaceCar` that **inherits** from `Vehicle`.
 - **Composition** with `Engine` — the car creates its own engine inside `__init__`
 - **Aggregation** with `Driver` — the driver is created outside and passed in
 
-### `__init__` signature
-```python
-def __init__(self, number, driver, team_name, speed, horsepower=800, engine_type="V6 Hybrid"):
-```
-
 ### Additional Attributes
 | Attribute | Type | Description |
 |---|---|---|
