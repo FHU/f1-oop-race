@@ -127,9 +127,7 @@ Create a class `RaceCar` that **inherits** from `Vehicle`.
 | `distance` | `float` | Total distance traveled (starts at `0`) |
 | `engine` | `Engine` | An `Engine` object created inside `__init__` (composition) |
 
-> **Inheritance note:** Call `super().__init__(speed)` so that `Vehicle.__init__` initializes `speed` and `fuel`.
->
-> **Composition note:** Create `self.engine = Engine(horsepower, engine_type)` inside `__init__`. The engine belongs to this car alone.
+> Consider first creating the RaceCar class first. Then think about how to model inheritance, then how to model the engine with comoposition. 
 
 ### Methods
 | Method | Returns | Description |
