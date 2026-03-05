@@ -6,7 +6,7 @@ class Engine():
         self.horsepower = horsepower
         self.engine_type = engine_type
         self.is_running = 'Off'
-    #TODO: FIX INSTRUCTION TO BE ON AND OFF INSTEAD OF TRUE AND FALSE
+
     def start(self):
         self.is_running = 'On'
     
@@ -169,3 +169,8 @@ if __name__ == "__main__":
     f1_race.race(laps)
     f1_race.print_final_results()
    
+    #TODO: Add teams to instructions
+    red_bull = RaceTeam('Red Bull')
+    red_bull.add_driver(alonso)
+    red_bull.add_driver(verstappen)
+    print(red_bull.get_team_data())
