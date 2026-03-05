@@ -220,14 +220,15 @@ Complete the main block at the bottom of your file:
 | `car_1` | 1 | verstappen | Red Bull | 25 | 820 | V6 Hybrid |
 | `car_44` | 44 | hamilton | Mercedes | 22 | 800 | V6 Hybrid |
 
-3. Create a `Race` object by passing in the list of cars (aggregation):
-   ```python
-   f1_race = Race([car_14, car_1, car_44])
-   ```
+3. Create teams `red_bull`, `aston_martin`, and `mercedes`, and add the appropriate drivers to their team.
+   
+4. Create a `Race` object named `f1_race`.
 
-4. Ask the user to input the number of laps.
+5. Add the cars `car_14`, `car_1`, and `car_44` to the `f1_race`
 
-5. Call `print_set_teams()`, `race(laps)`, and `print_final_results()`.
+6. Ask the user to input the number of laps.
+
+7. Call `print_set_teams()`, `race(laps)`, and `print_final_results()`.
 
 > ⚠️ **Do not remove** `if __name__ == "__main__":` from your submission.
 
