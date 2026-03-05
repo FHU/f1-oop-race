@@ -142,7 +142,7 @@ Create a class `RaceCar` that **inherits** from `Vehicle`.
 
 ## Part 5 — `RaceTeam`
 
-Create a class `RaceTeam` that uses **aggregation** — it holds references to `Driver` objects that are created outside the team and passed in.
+Create a class `RaceTeam` that uses **aggregation** — it holds references to `Driver` objects that are created outside the team and passed in. RaceTeams have Drivers, but they exist independently of each other, and drivers can be moved to different teams.
 
 ### Attributes (set in `__init__`)
 | Attribute | Type | Description |
@@ -156,12 +156,15 @@ Create a class `RaceTeam` that uses **aggregation** — it holds references to `
 | `add_driver(driver)` | `None` | Appends a `Driver` object to `self.drivers` |
 | `get_team_data()` | `str` | Returns `"Team: {name} Drivers: {comma-separated driver names}"` |
 
+>For example, if Alonso and Verstappen are on the same team named Team1, `Team1.get_team_data()` would output: `Team: Team1 Drivers: Alonso, Verstappen`
+
 > **Aggregation note:** `Driver` objects must be created *outside* of `RaceTeam` and passed into `add_driver()`. The same `Driver` object could be referenced elsewhere (e.g., also assigned to a `RaceCar`).
 
 ---
 
 ## Part 6 — `Race`
 
+The `Race` class handles the core functionality of an F1 race.
 Create a class `Race` that uses **aggregation** — it receives already-created `RaceCar` objects and stores references to them.
 
 > **Aggregation note:** `RaceCar` objects must be created *outside* of `Race` and added via `add_car()`. A `RaceCar` can exist independently of any `Race`.
@@ -176,8 +179,8 @@ Create a class `Race` that uses **aggregation** — it receives already-created 
 |---|---|---|
 | `add_car(race_car)` | `None` | Appends an existing `RaceCar` object to `self.race_cars` |
 | `print_set_teams()` | `None` | Prints a set of all unique team names in the race in this format: `Teams in race: {'Aston Martin', 'Mercedes', 'Red Bull'}` |
-| `run_lap(lap)` | `None` | Prints `---Lap {lap}---`, then for each car: calls `pit_stop()` if `needs_pit_stop()` is `True`, otherwise calls `drive(lap)`, then prints the car's info using `get_data()` |
-| `race(laps)` | `None` | Loops from lap `1` through `laps` (inclusive) calling `run_lap(lap)` each iteration. Wraps the loop in a `try/except` catching `ZeroDivisionError` as `e` and prints: `{e} - Lap count cannot be zero` |
+| `run_lap(lap)` | `None` | This method handles what it means to run a single lap of the race. First, Prints `---Lap {lap}---`, then for each car: calls `pit_stop()` if `needs_pit_stop()` is `True`, otherwise calls `drive(lap)`, then prints the car's info using `get_data()` |
+| `race(laps)` | `None` | This method handles the running of all laps in a race. It loops from lap `1` through `laps` (inclusive) calling `run_lap(lap)` each iteration. Wrap the loop in a `try/except` catching `ZeroDivisionError` as `e` and prints: `{e} - Lap count cannot be zero` |
 | `print_final_results()` | `None` | Sorts cars by distance (greatest first) and prints each car's driver, team, and distance (see format below) |
 
 **`print_final_results()` output format:**
