@@ -63,16 +63,17 @@ Create a class called `Engine`. `RaceCar` will create an `Engine` internally —
 |---|---|---|
 | `horsepower` | `int` | The engine's power output |
 | `engine_type` | `str` | The type of engine (e.g., `"V6 Hybrid"`) |
-| `is_running` | `bool` | Whether the engine is currently on (default: `False`) |
+| `is_running` | `str` | Whether the engine is currently on (default: `Off`) |
 
 ### Methods
 | Method | Returns | Description |
 |---|---|---|
-| `start()` | `None` | Sets `is_running` to `True` |
-| `stop()` | `None` | Sets `is_running` to `False` |
-| `get_data()` | `str` | Returns a string in this format: `"Engine: {engine_type} \| HP: {horsepower} \| Status: {Running or Off}"` |
+| `start()` | `None` | Sets `is_running` to `On` |
+| `stop()` | `None` | Sets `is_running` to `Off` |
+| `get_data()` | `str` | Returns a string in this format: `"Engine: {engine_type} \| HP: {horsepower} \| Status: {On or Off}"` |
 
-> **Example:** `Engine("V6 Hybrid", 800).get_data()` → `"Engine: V6 Hybrid | HP: 800 | Status: Off"`
+> **Example:**
+> For the object and method call: `Engine("V6 Hybrid", 800).get_data()` the output will be: `"Engine: V6 Hybrid | HP: 800 | Status: Off"`
 
 ---
 
@@ -89,7 +90,7 @@ Create a base class called `Vehicle` with the following:
 ### Methods
 | Method | Returns | Description |
 |---|---|---|
-| `refuel(amount)` | `None` | Adds `amount` to `self.fuel` |
+| `refuel(amount)` | `None` | Adds `amount` to the car's fuel |
 | `get_data()` | `str` | Returns `"Vehicle with speed {speed} and fuel {fuel}"` |
 
 ---
@@ -118,11 +119,6 @@ Create a class `RaceCar` that **inherits** from `Vehicle`.
 - **Composition** with `Engine` — the car creates its own engine inside `__init__`
 - **Aggregation** with `Driver` — the driver is created outside and passed in
 
-### `__init__` signature
-```python
-def __init__(self, number, driver, team_name, speed, horsepower=800, engine_type="V6 Hybrid"):
-```
-
 ### Additional Attributes
 | Attribute | Type | Description |
 |---|---|---|
@@ -132,23 +128,21 @@ def __init__(self, number, driver, team_name, speed, horsepower=800, engine_type
 | `distance` | `float` | Total distance traveled (starts at `0`) |
 | `engine` | `Engine` | An `Engine` object created inside `__init__` (composition) |
 
-> **Inheritance note:** Call `super().__init__(speed)` so that `Vehicle.__init__` initializes `speed` and `fuel`.
->
-> **Composition note:** Create `self.engine = Engine(horsepower, engine_type)` inside `__init__`. The engine belongs to this car alone.
+> Consider building the RaceCar class in this order:<br> 1. First creating the basics of the RaceCar class.<br> 2. Then think about how to model inheritance <br> 3. Then consider how to model aggregation with the driver <br>4. Then how to model the engine with comoposition. 
 
 ### Methods
 | Method | Returns | Description |
 |---|---|---|
-| `needs_pit_stop()` | `bool` | Returns `True` if `self.fuel <= 25`, otherwise `False` |
+| `needs_pit_stop()` | `bool` | Returns `True` if the car's fuel is less than 25, otherwise `False` |
 | `pit_stop()` | `None` | Prints `Car {number} must pit!` and resets `self.fuel` to `100` |
-| `drive(lap)` | `None` | Adds `self.speed / lap` to `self.distance`; subtracts `self.speed + lap` from `self.fuel` |
+| `drive(lap)` | `None` | This implements the core logic of driving a race. We're going to update both the distance traveled and the fuel used by the car. To update distance traveled, add `self.speed / lap` to the car's distance. To update the fuel used, subtract `self.speed + lap` from the car's fuel. |
 | `get_data()` | `str` | Returns `"Car: {number} Distance: {distance}"` where distance is shown as an **integer** (use `int()`) |
 
 ---
 
 ## Part 5 — `RaceTeam`
 
-Create a class `RaceTeam` that uses **aggregation** — it holds references to `Driver` objects that are created outside the team and passed in.
+Create a class `RaceTeam` that uses **aggregation** — it holds references to `Driver` objects that are created outside the team and passed in. RaceTeams have Drivers, but they exist independently of each other, and drivers can be moved to different teams.
 
 ### Attributes (set in `__init__`)
 | Attribute | Type | Description |
@@ -162,12 +156,15 @@ Create a class `RaceTeam` that uses **aggregation** — it holds references to `
 | `add_driver(driver)` | `None` | Appends a `Driver` object to `self.drivers` |
 | `get_team_data()` | `str` | Returns `"Team: {name} Drivers: {comma-separated driver names}"` |
 
+>For example, if Alonso and Verstappen are on the same team named Team1, `Team1.get_team_data()` would output: `Team: Team1 Drivers: Alonso, Verstappen`
+
 > **Aggregation note:** `Driver` objects must be created *outside* of `RaceTeam` and passed into `add_driver()`. The same `Driver` object could be referenced elsewhere (e.g., also assigned to a `RaceCar`).
 
 ---
 
 ## Part 6 — `Race`
 
+The `Race` class handles the core functionality of an F1 race.
 Create a class `Race` that uses **aggregation** — it receives already-created `RaceCar` objects and stores references to them.
 
 > **Aggregation note:** `RaceCar` objects must be created *outside* of `Race` and added via `add_car()`. A `RaceCar` can exist independently of any `Race`.
@@ -182,8 +179,8 @@ Create a class `Race` that uses **aggregation** — it receives already-created 
 |---|---|---|
 | `add_car(race_car)` | `None` | Appends an existing `RaceCar` object to `self.race_cars` |
 | `print_set_teams()` | `None` | Prints a set of all unique team names in the race in this format: `Teams in race: {'Aston Martin', 'Mercedes', 'Red Bull'}` |
-| `run_lap(lap)` | `None` | Prints `---Lap {lap}---`, then for each car: calls `pit_stop()` if `needs_pit_stop()` is `True`, otherwise calls `drive(lap)`, then prints the car's info using `get_data()` |
-| `race(laps)` | `None` | Loops from lap `1` through `laps` (inclusive) calling `run_lap(lap)` each iteration. Wraps the loop in a `try/except` catching `ZeroDivisionError` as `e` and prints: `{e} - Lap count cannot be zero` |
+| `run_lap(lap)` | `None` | This method handles what it means to run a single lap of the race. First, Prints `---Lap {lap}---`, then for each car: calls `pit_stop()` if `needs_pit_stop()` is `True`, otherwise calls `drive(lap)`, then prints the car's info using `get_data()` |
+| `race(laps)` | `None` | This method handles the running of all laps in a race. It loops from lap `1` through `laps` (inclusive) calling `run_lap(lap)` each iteration. Wrap the loop in a `try/except` catching `ZeroDivisionError` as `e` and prints: `{e} - Lap count cannot be zero` |
 | `print_final_results()` | `None` | Sorts cars by distance (greatest first) and prints each car's driver, team, and distance (see format below) |
 
 **`print_final_results()` output format:**
@@ -223,14 +220,15 @@ Complete the main block at the bottom of your file:
 | `car_1` | 1 | verstappen | Red Bull | 25 | 820 | V6 Hybrid |
 | `car_44` | 44 | hamilton | Mercedes | 22 | 800 | V6 Hybrid |
 
-3. Create a `Race` object by passing in the list of cars (aggregation):
-   ```python
-   f1_race = Race([car_14, car_1, car_44])
-   ```
+3. Create teams `red_bull`, `aston_martin`, and `mercedes`, and add the appropriate drivers to their team.
+   
+4. Create a `Race` object named `f1_race`.
 
-4. Ask the user to input the number of laps.
+5. Add the cars `car_14`, `car_1`, and `car_44` to the `f1_race`
 
-5. Call `print_set_teams()`, `race(laps)`, and `print_final_results()`.
+6. Ask the user to input the number of laps.
+
+7. Call `print_set_teams()`, `race(laps)`, and `print_final_results()`.
 
 > ⚠️ **Do not remove** `if __name__ == "__main__":` from your submission.
 
