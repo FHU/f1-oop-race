@@ -135,7 +135,7 @@ Create a class `RaceCar` that **inherits** from `Vehicle`.
 |---|---|---|
 | `needs_pit_stop()` | `bool` | Returns `True` if `self.fuel <= 25`, otherwise `False` |
 | `pit_stop()` | `None` | Prints `Car {number} must pit!` and resets `self.fuel` to `100` |
-| `drive(lap)` | `None` | Adds `self.speed / lap` to `self.distance`; subtracts `self.speed + lap` from `self.fuel` |
+| `drive(lap)` | `None` | This implements the core logic of driving a race. We're going to update both the distance traveled and the fuel used by the car. To update distance traveled, add `self.speed / lap` to `self.distance`. To update the fuel used, subtract `self.speed + lap` from `self.fuel` |
 | `get_data()` | `str` | Returns `"Car: {number} Distance: {distance}"` where distance is shown as an **integer** (use `int()`) |
 
 ---
