@@ -63,16 +63,17 @@ Create a class called `Engine`. `RaceCar` will create an `Engine` internally —
 |---|---|---|
 | `horsepower` | `int` | The engine's power output |
 | `engine_type` | `str` | The type of engine (e.g., `"V6 Hybrid"`) |
-| `is_running` | `bool` | Whether the engine is currently on (default: `False`) |
+| `is_running` | `str` | Whether the engine is currently on (default: `Off`) |
 
 ### Methods
 | Method | Returns | Description |
 |---|---|---|
-| `start()` | `None` | Sets `is_running` to `True` |
-| `stop()` | `None` | Sets `is_running` to `False` |
-| `get_data()` | `str` | Returns a string in this format: `"Engine: {engine_type} \| HP: {horsepower} \| Status: {Running or Off}"` |
+| `start()` | `None` | Sets `is_running` to `On` |
+| `stop()` | `None` | Sets `is_running` to `Off` |
+| `get_data()` | `str` | Returns a string in this format: `"Engine: {engine_type} \| HP: {horsepower} \| Status: {On or Off}"` |
 
-> **Example:** `Engine("V6 Hybrid", 800).get_data()` → `"Engine: V6 Hybrid | HP: 800 | Status: Off"`
+> **Example:**
+> For the object and method call: `Engine("V6 Hybrid", 800).get_data()` the output will be: `"Engine: V6 Hybrid | HP: 800 | Status: Off"`
 
 ---
 
@@ -127,7 +128,7 @@ Create a class `RaceCar` that **inherits** from `Vehicle`.
 | `distance` | `float` | Total distance traveled (starts at `0`) |
 | `engine` | `Engine` | An `Engine` object created inside `__init__` (composition) |
 
-> Consider first creating the RaceCar class first. Then think about how to model inheritance, then how to model the engine with comoposition. 
+> Consider building the RaceCar class in this order:<br> 1. First creating the basics of the RaceCar class.<br> 2. Then think about how to model inheritance <br> 3. Then consider how to model aggregation with the driver <br>4. Then how to model the engine with comoposition. 
 
 ### Methods
 | Method | Returns | Description |
