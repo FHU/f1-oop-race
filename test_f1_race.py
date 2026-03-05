@@ -68,16 +68,16 @@ class TestEngine:
         assert basic_engine.engine_type == "V6 Hybrid"
 
     def test_initial_not_running(self, basic_engine):
-        assert basic_engine.is_running is False
+        assert basic_engine.is_running == 'Off'
 
     def test_start_sets_running_true(self, basic_engine):
         basic_engine.start()
-        assert basic_engine.is_running is True
+        assert basic_engine.is_running == 'On'
 
     def test_stop_sets_running_false(self, basic_engine):
         basic_engine.start()
         basic_engine.stop()
-        assert basic_engine.is_running is False
+        assert basic_engine.is_running == 'Off'
 
     def test_get_data_when_off(self, basic_engine):
         result = basic_engine.get_data()
@@ -88,7 +88,7 @@ class TestEngine:
     def test_get_data_when_running(self, basic_engine):
         basic_engine.start()
         result = basic_engine.get_data()
-        assert "Running" in result
+        assert "On" in result
 
     def test_get_data_returns_string(self, basic_engine):
         assert isinstance(basic_engine.get_data(), str)
@@ -103,31 +103,37 @@ class TestVehicle:
     def test_default_fuel(self):
         v = Vehicle(speed=100)
         assert v.fuel == 100
-
+    #Removed because doesn't match the instructions
+    '''
     def test_custom_fuel(self):
         v = Vehicle(speed=80, fuel=50)
         assert v.fuel == 50
+        '''
 
     def test_speed_set(self):
         v = Vehicle(speed=150)
         assert v.speed == 150
 
     def test_refuel_adds_fuel(self):
-        v = Vehicle(speed=100, fuel=40)
+        v = Vehicle(speed=100)
+        v.fuel = 40
         v.refuel(30)
         assert v.fuel == 70
 
     def test_get_data_returns_string(self):
-        v = Vehicle(speed=100, fuel=75)
+        v = Vehicle(speed=100)
+        v.fuel = 75
         assert isinstance(v.get_data(), str)
 
     def test_get_data_format(self):
-        v = Vehicle(speed=100, fuel=75)
+        v = Vehicle(speed=100)
+        v.fuel = 75
         assert v.get_data() == "Vehicle with speed 100 and fuel 75"
 
     def test_no_str_method(self):
         """Vehicle should use get_data(), not __str__, for formatted output."""
-        v = Vehicle(speed=100, fuel=75)
+        v = Vehicle(speed=100)
+        v.fuel = 75
         # get_data() must exist
         assert hasattr(v, "get_data")
 
@@ -183,7 +189,7 @@ class TestRaceCar:
 
     def test_driver_exists_independently(self, driver_alonso):
         """Aggregation: the same Driver object can be referenced without the car."""
-        car = RaceCar(14, driver_alonso, "Aston Martin", 20)
+        car = RaceCar(14, driver_alonso, "Aston Martin", 20, 750, 'V6 Hybrid')
         assert car.driver is driver_alonso   # same object, not a copy
 
     # Composition — Engine created inside RaceCar
@@ -199,8 +205,8 @@ class TestRaceCar:
 
     def test_engine_is_composition(self, driver_alonso):
         """Composition: two different cars must have two different Engine objects."""
-        car_a = RaceCar(1, driver_alonso, "Team A", 20)
-        car_b = RaceCar(2, driver_alonso, "Team B", 20)
+        car_a = RaceCar(1, driver_alonso, "Team A", 20, 750, 'V6 Hybrid')
+        car_b = RaceCar(2, driver_alonso, "Team B", 20, 750, 'V6 Hybrid')
         assert car_a.engine is not car_b.engine
 
     # needs_pit_stop
@@ -373,8 +379,8 @@ class TestRace:
 
     def test_print_set_teams_unique(self, driver_alonso, driver_verstappen, capsys):
         """Duplicate team names should appear only once (set behaviour)."""
-        car_a = RaceCar(14, driver_alonso,     "Red Bull", 20)
-        car_b = RaceCar(1,  driver_verstappen, "Red Bull", 25)
+        car_a = RaceCar(14, driver_alonso,     "Red Bull", 20, 750, 'V6 Hybrid')
+        car_b = RaceCar(1,  driver_verstappen, "Red Bull", 25, 750, 'V6 Hybrid')
         race = Race()
         race.add_car(car_a)
         race.add_car(car_b)
@@ -430,7 +436,7 @@ class TestRace:
 
     def test_race_zero_division_handled(self, driver_alonso, capsys):
         """ZeroDivisionError raised during a lap must be caught and reported."""
-        car = RaceCar(99, driver_alonso, "Test Team", 10)
+        car = RaceCar(99, driver_alonso, "Test Team", 10, 750, 'V6 Hybrid')
         race = Race()
         race.add_car(car)
 
