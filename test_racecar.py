@@ -162,4 +162,45 @@ class TestRaceCar:
 
     def test_get_data_exists(self, basic_car):
         assert hasattr(basic_car, "get_data")
+    
+    # __gt__ and __lt__ — comparison by engine horsepower
+    #number, driver, team_name, speed, horsepower, engine_type
+    def test_gt_higher_hp_returns_true(self, driver_alonso):
+        """A car with more HP should be greater than one with less."""
+        high_hp = RaceCar(1, driver_alonso, "Team A", 20, horsepower=900, engine_type="V6 Hybrid")
+        low_hp  = RaceCar(2, driver_alonso, "Team B", 20, horsepower=700,engine_type="V6 Hybrid")
+        assert high_hp > low_hp
+
+    def test_gt_lower_hp_returns_false(self, driver_alonso):
+        high_hp = RaceCar(1, driver_alonso, "Team A", 20, horsepower=900, engine_type="V6 Hybrid")
+        low_hp  = RaceCar(2, driver_alonso, "Team B", 20, horsepower=700, engine_type="V6 Hybrid")
+        assert not (low_hp > high_hp)
+
+    def test_gt_equal_hp_returns_false(self, driver_alonso):
+        car_a = RaceCar(1, driver_alonso, "Team A", 20, horsepower=800, engine_type="V6 Hybrid")
+        car_b = RaceCar(2, driver_alonso, "Team B", 20, horsepower=800, engine_type="V6 Hybrid")
+        assert not (car_a > car_b)
+
+    def test_lt_lower_hp_returns_true(self, driver_alonso):
+        """A car with less HP should be less than one with more."""
+        high_hp = RaceCar(1, driver_alonso, "Team A", 20, horsepower=900, engine_type="V6 Hybrid")
+        low_hp  = RaceCar(2, driver_alonso, "Team B", 20, horsepower=700, engine_type="V6 Hybrid")
+        assert low_hp < high_hp
+
+    def test_lt_higher_hp_returns_false(self, driver_alonso):
+        high_hp = RaceCar(1, driver_alonso, "Team A", 20, horsepower=900, engine_type="V6 Hybrid")
+        low_hp  = RaceCar(2, driver_alonso, "Team B", 20, horsepower=700, engine_type="V6 Hybrid")
+        assert not (high_hp < low_hp)
+
+    def test_lt_equal_hp_returns_false(self, driver_alonso):
+        car_a = RaceCar(1, driver_alonso, "Team A", 20, horsepower=800, engine_type="V6 Hybrid")
+        car_b = RaceCar(2, driver_alonso, "Team B", 20, horsepower=800, engine_type="V6 Hybrid")
+        assert not (car_a < car_b)
+
+    def test_gt_uses_engine_horsepower(self, driver_alonso):
+        """Verify comparison uses engine.horsepower, not speed or number."""
+        # Same speed, different HP — only HP should drive the comparison
+        car_fast = RaceCar(1, driver_alonso, "Team A", speed=50, horsepower=600, engine_type="V6 Hybrid")
+        car_powerful = RaceCar(2, driver_alonso, "Team B", speed=10, horsepower=1000, engine_type="V6 Hybrid")
+        assert car_powerful > car_fast
 

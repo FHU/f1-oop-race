@@ -70,7 +70,7 @@ Create a class called `Engine`. `RaceCar` will create an `Engine` internally —
 |---|---|---|
 | `start()` | `None` | Sets `is_running` to `On` |
 | `stop()` | `None` | Sets `is_running` to `Off` |
-| `get_data()` | `str` | Returns a string in this format: `"Engine: {engine_type} \| HP: {horsepower} \| Status: {On or Off}"` |
+| `__str__()` | `str` | Overload the str method to returns a string in this format: `"Engine: {engine_type} \| HP: {horsepower} \| Status: {On or Off}"` |
 
 > **Example:**
 > For the object and method call: `Engine("V6 Hybrid", 800).get_data()` the output will be: `"Engine: V6 Hybrid | HP: 800 | Status: Off"`
@@ -137,6 +137,8 @@ Create a class `RaceCar` that **inherits** from `Vehicle`.
 | `pit_stop()` | `None` | Prints `Car {number} must pit!` and resets `self.fuel` to `100` |
 | `drive(lap)` | `None` | This implements the core logic of driving a race. We're going to update both the distance traveled and the fuel used by the car. To update distance traveled, add `self.speed / lap` to the car's distance. To update the fuel used, subtract `self.speed + lap` from the car's fuel. |
 | `get_data()` | `str` | Returns `"Car: {number} Distance: {distance}"` where distance is shown as an **integer** (use `int()`) |
+| `__lt__(other)` 	| `bool` | Returns `True` if this car's engine's horsepower is less than other's |
+| `__gt__(other)`	| `bool`	|	Returns `True` if this car's engine's horsepower is greater than other's |
 
 ---
 
@@ -173,13 +175,15 @@ Create a class `Race` that uses **aggregation** — it receives already-created 
 | Attribute | Type | Description |
 |---|---|---|
 | `race_cars` | `list` | A list of `RaceCar` objects (starts empty) |
+| `_lap_count` | `int` | Internal counter tracking laps completed (starts at `0`). The single leading underscore signals this attribute is for internal use and should not be accessed directly from outside the class.
 
 ### Methods
 | Method | Returns | Description |
 |---|---|---|
 | `add_car(race_car)` | `None` | Appends an existing `RaceCar` object to `self.race_cars` |
 | `print_set_teams()` | `None` | Prints a set of all unique team names in the race in this format: `Teams in race: {'Aston Martin', 'Mercedes', 'Red Bull'}` |
-| `run_lap(lap)` | `None` | This method handles what it means to run a single lap of the race. First, Prints `---Lap {lap}---`, then for each car: calls `pit_stop()` if `needs_pit_stop()` is `True`, otherwise calls `drive(lap)`, then prints the car's info using `get_data()` |
+| `get_lap_count` | `int` | Returns the current value of `_lap_count` |
+| `run_lap(lap)` | `None` | This method handles what it means to run a single lap of the race. First, Prints `---Lap {lap}---`, then for each car: calls `pit_stop()` if `needs_pit_stop()` is `True`, otherwise calls `drive(lap)`, then prints the car's info using `get_data()`. Increments `_lap_count` by 1 at the end of each lap.|
 | `race(laps)` | `None` | This method handles the running of all laps in a race. It loops from lap `1` through `laps` (inclusive) calling `run_lap(lap)` each iteration. Wrap the loop in a `try/except` catching `ZeroDivisionError` as `e` and prints: `{e} - Lap count cannot be zero` |
 | `print_final_results()` | `None` | Sorts cars by distance (greatest first) and prints each car's driver, team, and distance (see format below) |
 

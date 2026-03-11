@@ -79,16 +79,13 @@ class TestEngine:
         basic_engine.stop()
         assert basic_engine.is_running == 'Off'
 
-    def test_get_data_when_off(self, basic_engine):
-        result = basic_engine.get_data()
-        assert "V6 Hybrid" in result
-        assert "800" in result
-        assert "Off" in result
-
+    def test_str_when_off(self, basic_engine):
+        assert str(basic_engine) == "Engine: V6 Hybrid | HP: 800 | Status: Off" 
+'''
     def test_get_data_when_running(self, basic_engine):
         basic_engine.start()
         result = basic_engine.get_data()
         assert "On" in result
 
     def test_get_data_returns_string(self, basic_engine):
-        assert isinstance(basic_engine.get_data(), str)
+        assert isinstance(basic_engine.get_data(), str)'''

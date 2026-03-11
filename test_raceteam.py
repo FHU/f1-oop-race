@@ -110,8 +110,4 @@ class TestRaceTeam:
         assert "Hamilton" in result
 
     def test_get_team_data_exists(self):
-<<<<<<< HEAD
         assert hasattr(RaceTeam("X"), "get_team_data")
-=======
-        assert hasattr(RaceTeam("X"), "get_team_data")
->>>>>>> dc5feeac5d5e11455dcda6e887be2b0a0dda1be0

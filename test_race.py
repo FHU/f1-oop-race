@@ -98,6 +98,31 @@ class TestRace:
         assert speeds[14] == 20
         assert speeds[1]  == 25
         assert speeds[44] == 22
+    # _lap_count — single leading underscore internal attribute
+    def test_lap_count_starts_at_zero(self):
+        """_lap_count must be initialised to 0."""
+        race = Race()
+        assert race._lap_count == 0
+
+    def test_lap_count_increments_each_lap(self, standard_race):
+        """_lap_count must increase by 1 for each lap run."""
+        standard_race.run_lap(1)
+        assert standard_race._lap_count == 1
+        standard_race.run_lap(2)
+        assert standard_race._lap_count == 2
+
+    def test_get_lap_count_returns_zero_before_race(self):
+        assert Race().get_lap_count() == 0
+
+    def test_get_lap_count_after_race(self, standard_race):
+        standard_race.race(3)
+        assert standard_race.get_lap_count() == 3
+
+    def test_get_lap_count_matches_lap_count_attribute(self, standard_race):
+        """get_lap_count() must return the value of _lap_count."""
+        standard_race.race(5)
+        assert standard_race.get_lap_count() == standard_race._lap_count
+
 
     # print_set_teams
     def test_print_set_teams_output(self, standard_race, capsys):
